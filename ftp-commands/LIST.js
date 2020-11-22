@@ -3,7 +3,7 @@ const path = require('path')
 
 //module.exports = function list(){
 
-    fs.readdir(path, function(err, file) => {
+    fs.readdir(__dirname, (err, file) => {
         if (err)
         console.log(err)
         else {
@@ -13,10 +13,10 @@ const path = require('path')
             }
         })
 
-        for (var i=0; i<file.length; i++) {
-            console.log(file[i]);
-        }
-    });
+        //for (var i=0; i<file.length; i++) {
+          //  console.log(file[i]);
+        //}
+    //});
 //}
 
-//socket.write(files[i])
+//socket.write(file[i])
