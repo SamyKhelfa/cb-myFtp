@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-function handler(file){
+function handler(socket, file){
 
     fs.readdir(__dirname, (err, file) => {
         if (err)
