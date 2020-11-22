@@ -1,23 +1,64 @@
 const net = require('net')
 
-const server = net.createServer((socket) => {
-  console.log('new connection')
+// Import ftp-commands handler
+const userHandler = require('./ftp-commands/USER')
+const passwordHandler = require('./ftp-commands/PASS')
+const systHandler = require('./ftp-commands/SYST')
+const featHandler = require('./ftp-commands/FEAT')
+const listHandler = require('./ftp-commands/LIST')
 
-  socket.on('data', (data) => {
-    const [directive, parameter] = data.toString().split(' ')
+/**
+ * Socket Listeners
+ */
+function onData(data) {
+  const request = data     // Buffer < 0x00 ... >
+    .toString()            // USER Samy\r\n
+    .replace('\r\n', '')   // USER Samy
 
-    switch(directive) {
-        case 'USER':
-            // check if user exist in database
-            // if true
-            socket.write('200 successfuly connected')
-            break;
-    }
-  })
+  console.log('FileZilla >>', request)
 
-  socket.write('Hello from server')
+  const [command, args] = request.split(' ') // ['USER', 'Samy']
+
+  // Command Handler
+  switch(command) {
+    case 'USER':
+      userHandler(this, args)
+      break
+    case 'SYST':
+      systHandler(this, args)
+      break
+    case 'PASS':
+      passwordHandler(this, args)
+      break
+    case 'FEAT':
+      featHandler(this, args)
+      break
+    case 'LIST':
+      listHandler(this, args)
+    default:
+      console.log(`Unknown command: ${command}`)
+      break
+  }
+}
+
+/**
+ * Server Listeners
+ */
+function onConnection(socket) {
+  // Send FTP Hello Message
+  socket.write('200 Hello World!\r\n')
+
+  // Initialize Socket Listeners
+  socket.on('data', onData)
+}
+
+// Parse node.js server <PORT>
+const PORT = process.argv[2]
+
+// Create TCP Server
+const server = net.createServer(onConnection)
+
+// Listen on localhost::PORT
+server.listen(PORT, () => {
+  console.log(`Server started at port ${PORT}`);
 })
-
-server.listen(5000, () => {
-  console.log('Server started at port 5000')
-})  
