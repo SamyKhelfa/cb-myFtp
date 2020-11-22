@@ -1,3 +1,4 @@
+const { Socket } = require('dgram')
 const fs = require('fs')
 const path = require('path')
 
@@ -13,10 +14,12 @@ const path = require('path')
             }
         })
 
+        socket.write(file)
+
         //for (var i=0; i<file.length; i++) {
           //  console.log(file[i]);
         //}
     //});
-//}
+//} 
 
 //socket.write(file[i])
