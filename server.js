@@ -4,7 +4,6 @@ const net = require('net')
 const userHandler = require('./ftp-commands/USER')
 const passwordHandler = require('./ftp-commands/PASS')
 const systHandler = require('./ftp-commands/SYST')
-const featHandler = require('./ftp-commands/FEAT')
 const listHandler = require('./ftp-commands/LIST')
 
 /**
@@ -29,9 +28,6 @@ function onData(data) {
       break
     case 'PASS':
       passwordHandler(this, args)
-      break
-    case 'FEAT':
-      featHandler(this, args)
       break
     case 'LIST':
       listHandler(this, args)
