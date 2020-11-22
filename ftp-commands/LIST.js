@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-//module.exports = function list(){
+function handler(file){
 
     fs.readdir(__dirname, (err, file) => {
         if (err)
@@ -10,16 +10,11 @@ const path = require('path')
             console.log("\nCurrent directory filenames:")
             files.forEach(file => {
                 console.log(file)
+                socket.write(file)
             }
-            socket.write(file)
+            
         })
+    }
 
+        module.exports = handler
         
-
-        //for (var i=0; i<file.length; i++) {
-          //  console.log(file[i]);
-        //}
-    //});
-//} 
-
-//socket.write(file[i])
